@@ -34,7 +34,6 @@ public class AuthorizeController {
     @GetMapping("/callback")
         public String Callback(@RequestParam(name="code") String code,
                                @RequestParam(name="state") String state,
-                               HttpServletRequest request,
                                HttpServletResponse response){//Spring把上下文中的request写入使用。
             //创建一个AccessTokenDTO对象，并设置其参数，为我们要去Github中找到指定accessToken的标识。
             AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
@@ -46,8 +45,6 @@ public class AuthorizeController {
             //通过设定好的参数标识，获得accessToken和user信息
             String accessToken = githubProvider.getAccessToken(accessTokenDTO);//GithubProvider类中的方法之一
             GithubUser githubUser = githubProvider.getUser(accessToken);//GithubProvider类中的方法之一
-            System.out.println(githubUser
-                    .getId());
             if(githubUser!=null){
                 //创建model里的User并赋值
                 User user = new User();
@@ -57,10 +54,10 @@ public class AuthorizeController {
                 user.setAccountId(String.valueOf(githubUser.getId()));
                 user.setGmtCreate(System.currentTimeMillis());
                 user.setGmtModified(user.getGmtCreate());
+                user.setAvatarUrl(githubUser.getAvatar_url());
                 userMapper.insert(user);
                 //登陆成功，写Cookies和session
                 response.addCookie(new Cookie("token",token));
-                request.getSession().setAttribute("user",user);
                 return "redirect:/";
             }
             else{
