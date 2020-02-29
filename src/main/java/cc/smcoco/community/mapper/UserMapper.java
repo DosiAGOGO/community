@@ -15,4 +15,7 @@ public interface UserMapper {
     //注解的感觉就是双引号里的内容是这个注解自动写的sql语句。
     @Select("select * from user where token = #{token}")
     User findByToken(@Param("token") String token);
+
+    @Select("select * from user where id = #{id}")
+    User findById(@Param("id") Integer id);
 }

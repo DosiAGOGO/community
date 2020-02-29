@@ -1,7 +1,11 @@
 package cc.smcoco.community.controller;
 
+import cc.smcoco.community.dto.QuestionDTO;
+import cc.smcoco.community.mapper.QuestionMapper;
 import cc.smcoco.community.mapper.UserMapper;
+import cc.smcoco.community.model.Question;
 import cc.smcoco.community.model.User;
+import cc.smcoco.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -17,8 +22,12 @@ public class IndexController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private QuestionService questionService;
+
     @GetMapping("/")
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request,
+                        Model model) {
         //传入token 根据token寻找到user。token通过request取得。
         Cookie[] cookies = request.getCookies();
         //此处因为得到的是很多cookie所以要循环遍历，直到有一个的cookie满足。
@@ -34,9 +43,10 @@ public class IndexController {
                     break;
                 }
             }
-
         }
 
+        List<QuestionDTO> questionsList = questionService.list();
+        model.addAttribute("questions",questionsList);
         return "index";
     }
 }

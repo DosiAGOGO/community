@@ -60,24 +60,24 @@
                 <div class="form-group">
                     <label for="title">问题标题</label>
                     <input type="text" class="form-control" id="title" th:value="${title}" name="title" placeholder="输入问题标题……">
-                    <div th:text="标题不能为空" style="color: red"
+                    <div th:text="error标题不能为空" style="color: red"
                          th:if="${error == 2}"></div>
                 </div>
                 <div class="form-group">
                     <label for="description">问题详情</label>
                     <textarea name="description" id="description" th:text="${description}" class="form-control" cols="30" rows="10"></textarea>
-                    <div th:text="描述不能为空" style="color: red"
+                    <div th:text="error描述不能为空" style="color: red"
                          th:if="${error == 3}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签</label>
                     <input type="text" class="form-control" id="tag" th:value="${tag}"  name="tag" placeholder="输入标签，以， 隔开">
-                    <div th:text="标签不能为空" style="color: red"
+                    <div th:text="error标签不能为空" style="color: red"
                          th:if="${error == 4}"></div>
                 </div>
 
-                <div th:text="请先登陆" style="color: red"
+                <div th:text="error请先登陆" style="color: red"
                      th:if="${error == 1}">
                 </div>
                 <button type="submit" class="btn btn-success btn-publish" th:bgcolor="red">发布</button>

@@ -68,7 +68,6 @@ public class PublishController {
             }
         }
 
-
         if (user == null) {
             model.addAttribute("error", 1);
             return "publish";
