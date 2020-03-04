@@ -1,5 +1,6 @@
 package cc.smcoco.community.controller;
 
+import cc.smcoco.community.dto.PaginationDTO;
 import cc.smcoco.community.dto.QuestionDTO;
 import cc.smcoco.community.mapper.QuestionMapper;
 import cc.smcoco.community.mapper.UserMapper;
@@ -27,7 +28,10 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model) {
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size
+                        ) {
         //传入token 根据token寻找到user。token通过request取得。
         Cookie[] cookies = request.getCookies();
         //此处因为得到的是很多cookie所以要循环遍历，直到有一个的cookie满足。
@@ -44,9 +48,8 @@ public class IndexController {
                 }
             }
         }
-
-        List<QuestionDTO> questionsList = questionService.list();
-        model.addAttribute("questions",questionsList);
+        PaginationDTO pagination = questionService.list(page,size);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }

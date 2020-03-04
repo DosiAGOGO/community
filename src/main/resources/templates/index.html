@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Community</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/community.css">
@@ -13,7 +13,8 @@
     <div class="container-fluid" style="background-color: #ec971f">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Community</span>
                 <span class="icon-bar"></span>
 
@@ -34,7 +35,8 @@
                     <a href="/publish">发布</a>
                 </li>
                 <li class="dropdown" th:if="${session.user != null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}" }><span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:text="${session.user.getName()}" }><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">First</a></li>
                         <li><a href="#">Second</a></li>
@@ -56,22 +58,50 @@
                 <h2><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 首页</h2>
                 <hr>
 
-                <div class="media" th:each="question : ${questions}">
+                <div class="media" th:each="question : ${pagination.questions}">
                     <div class="media-left">
                         <a href="#">
                             <img class="m-object img-rounded"
-                                 th:src = "${question.user.avatarUrl}">
+                                 th:src="${question.user.avatarUrl}">
                         </a>
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading"><span th:text="${question.title}"></span></h4>
                         <span th:text="${question.description}"></span><br>
-                        <span class="media-text">评论 <span th:text="${question.commentCount}"></span>，查看 <span th:text="${question.viewCount}"></span><span th:text="${#calendars.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                        <span class="media-text">评论 <span th:text="${question.commentCount}"></span>，查看 <span
+                                th:text="${question.viewCount}"></span><span
+                                th:text="${#calendars.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
 
                     </div>
                 </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:if="${pagination.firstPage}">
+                            <a href="?/page=1" aria-label="first">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.prePage}">
+                            <a th:href="@{/(page=${pagination.page - 1})}" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page}?'active':' '">
+                            <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+                        </li>
+                        <li th:if="${pagination.nextPage}">
+                            <a th:href="@{/(page=${pagination.page + 1})}" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.endPage}">
+                            <a th:href="@{/(page=${pagination.totalPage})}" aria-label="end">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-
             <div class="col-lg-3  col-md-12 col-sm-12 col-xs-12">
                 <h3>占位</h3>
                 描述描述描述描述
@@ -84,6 +114,7 @@
                 描述描述
             </div>
         </div>
+
 </nav>
 
 </body>
